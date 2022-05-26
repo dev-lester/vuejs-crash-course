@@ -15,7 +15,6 @@ import "primeflex/primeflex.css";
 const app = createApp(App);
 app.use(router);
 app.use(PrimeVue, { ripple: true });
-
 app.component("Button", Button);
 app.component("Card", Card);
 app.component("InputText", InputText);
