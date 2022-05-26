@@ -39,7 +39,7 @@ export default {
   components: {},
   methods: {
     onRemove(id) {
-      console.log("clicked!", id)
+      this.$emit("remove-pet", id);
     }
   }
 
