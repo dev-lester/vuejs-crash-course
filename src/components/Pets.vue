@@ -1,7 +1,10 @@
 <template>
   <div class="p-grid">
     <div class="p-col-12 p-md-6 p-lg-3" v-for="pet in pets" :key="pet.id">
-      <Pet @remove-pet="$emit('remove-pet', pet.id)" :pet="pet"/>
+      <Pet 
+        @remove-pet="$emit('remove-pet', pet.id)"
+        @add-favorite="$emit('add-favorite', pet.id)" 
+        :pet="pet"/>
     </div>
   </div>
 </template>
@@ -14,7 +17,7 @@ export default {
     pets: Array
   },
   components: { Pet },
-  emits: ["remove-pet"],
+  emits: ["remove-pet", "add-favorite"],
 }
 </script>
 

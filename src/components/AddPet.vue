@@ -1,26 +1,51 @@
 <template>
 <div style="margin-top: 20px">
-  <div class="p-formgroup-inline">
+  <form @submit="onSubmit" class="p-formgroup-inline">
     <div class="p-field">
       <label for="name" class="p-sr-only">Name</label>
-      <InputText id="name" type="text" placeholder="name" />
+      <InputText v-model="this.name" id="name" type="text" placeholder="name" />
     </div>
     <div class="p-field">
       <label for="age" class="p-sr-only">Age</label>
-      <InputText id="age" type="number" placeholder="age" />
+      <InputText v-model="this.age" id="age" type="number" placeholder="age" />
     </div>
     <div class="p-field">
       <label for="url" class="p-sr-only">URL</label>
-      <InputText id="age" type="text" placeholder="Image URL" />
+      <InputText v-model="this.url" id="url" type="text" placeholder="Image URL" />
     </div>
-    <Button type="button" label="Save" />
-  </div>
+    <Button type="submit" label="Save" />
+  </form>
 </div>
 </template>
 
 <script>
 export default {
+  name: "AddPet",
+  data() {
+    return {
+      name: "",
+      age: "",
+      url: "",
+      isFavorite: false
+    }
+  },
+  methods: {
+    onSubmit(e) {
+      e.preventDefault();
+      const newPet = {
+        id: Math.random(),
+        name: this.name,
+        age: this.age,
+        url: this.url
+      }
+      // console.log("New Pet Added!", newPet);
+      this.$emit("add-pet", newPet);
 
+      this.name = ""
+      this.age = ""
+      this.url = ""
+    }
+  }
 }
 </script>
 

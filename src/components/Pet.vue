@@ -2,7 +2,8 @@
   <div class="pet">
     <Card>
       <template #header>
-          <img v-bind:src="pet.img"/>
+          <!-- <img v-bind:src="pet.img"/> -->
+          <img src="https://www.primefaces.org/wp-content/uploads/2020/02/primefacesorg-primevue-2020.png" />
       </template>
       <template #title>
           {{ pet.name }}
@@ -18,7 +19,8 @@
           class="p-button-danger" 
           style="margin-right: 4em" 
         />
-        <Button 
+        <Button
+         @click="$emit('add-favorite', pet.id)"
           icon="pi pi-heart" 
           :class="[
             pet.isFavorite ? '' : 'p-button-outlined', 
@@ -40,7 +42,7 @@ export default {
   methods: {
     onRemove(id) {
       this.$emit("remove-pet", id);
-    }
+    },
   }
 
 }
