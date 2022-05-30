@@ -2,8 +2,8 @@
   <div class="pet">
     <Card>
       <template #header>
-          <!-- <img v-bind:src="pet.img"/> -->
-          <img src="https://www.primefaces.org/wp-content/uploads/2020/02/primefacesorg-primevue-2020.png" />
+          <img :src="pet.url" alt="pet">
+          <!-- <img src="https://www.primefaces.org/wp-content/uploads/2020/02/primefacesorg-primevue-2020.png" /> -->
       </template>
       <template #title>
           {{ pet.name }}

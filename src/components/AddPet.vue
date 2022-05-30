@@ -25,25 +25,24 @@ export default {
     return {
       name: "",
       age: "",
-      url: "",
-      isFavorite: false
+      url: ""
     }
   },
   methods: {
     onSubmit(e) {
       e.preventDefault();
       const newPet = {
-        id: Math.random(),
         name: this.name,
         age: this.age,
-        url: this.url
+        url: this.url,
+        isFavorite: false
       }
       // console.log("New Pet Added!", newPet);
       this.$emit("add-pet", newPet);
-
       this.name = ""
       this.age = ""
       this.url = ""
+
     }
   }
 }

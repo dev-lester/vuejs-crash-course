@@ -17,20 +17,66 @@ export default {
     AddPet 
   },
   methods: {
-    addPet(pet) {
-      this.pets = [...this.pets, pet]
-      console.log("receiving event from AddPet component to Home componenet", pet);
+    async addPet(pet) {
+      const res = await fetch("https://62942560a7203b3ed0636f3c.mockapi.io/pets", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(pet)
+      });
+
+      const data = await res.json(); 
+      this.pets = [...this.pets, data]
     },
-    removePet(id) {
-      if (confirm("Are you sure you want to remvoe this pet?")) {
-        this.pets = this.pets.filter((pet) => pet.id !== id)
+
+    async removePet(id) {
+      if (confirm("Are you sure you want to remove")) {
+        const res = await fetch(
+          `https://62942560a7203b3ed0636f3c.mockapi.io/pets/${id}`,
+          {
+            method: "DELETE",
+          }
+        );
+        res.status === 200 
+        ? this.pets = this.pets.filter((pet) => pet.id !== id) 
+        : alert('Failed to delete Pet!');
       }
     },
-    addFavorite(id) {
-      this.pets = this.pets.map((pet) =>
-        pet.id === id ? { ...pet, isFavorite: !pet.isFavorite } : pet
-      );
+
+    async addFavorite(id) {
+      const addFavorite = await this.fetchPet(id);
+      const updatedFavorite = {
+        ...addFavorite, 
+        isFavorite: !addFavorite.isFavorite
+      };
+      const res = await fetch(`https://62942560a7203b3ed0636f3c.mockapi.io/pets/${id}`, 
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(updatedFavorite)
+      });
+      const data = await res.json()
+      this.pets = this.pets.map((pet) => pet.id === id ? {...pet, isFavorite: data.isFavorite} : pet)
     },
+
+    async fetchPets() {
+      const res = await fetch(
+        "https://62942560a7203b3ed0636f3c.mockapi.io/pets"
+      );
+      const data = await res.json();
+      return data;
+    },
+
+    async fetchPet(id) {
+      console.log("fetch pet", id)
+      const res = await fetch(`https://62942560a7203b3ed0636f3c.mockapi.io/pets/${id}`);
+      const data = await res.json();
+      console.log({data})
+      return data;
+    }
     
   },
   data() {
@@ -38,69 +84,17 @@ export default {
       pets: []
     };
   },
-  created() {
-    this.pets = [
-      {
-        id: 1,
-        name: "Jules",
-        age: 69,
-        img: "https://www.google.com/",
-        isFavorite: true
-      },
-      {
-        id: 2,
-        name: "Nikko",
-        age: 78,
-        img: "https://www.google.com/",
-        isFavorite: true
-      },
-      {
-        id: 3,
-        name: "Gen",
-        age: 420,
-        img: "https://www.google.com/",
-        isFavorite: false
-      },
-      // {
-      //   id: 4,
-      //   name: "Paul",
-      //   age: 42,
-      //   img: "https://www.google.com/",
-      //   isFavorite: true
-      // },
-      // {
-      //   id: 5,
-      //   name: "Kyle",
-      //   age: 69,
-      //   img: "https://www.google.com/",
-      //   isFavorite: false
-      // },
-      // {
-      //   id: 6,
-      //   name: "Jester",
-      //   age: 69,
-      //   img: "https://www.google.com/",
-      //   isFavorite: false
-      // },
-      // {
-      //   id: 7,
-      //   name: "Sofia",
-      //   age: 69,
-      //   img: "https://www.google.com/",
-      //   isFavorite: false
-      // },
-      // {
-      //   id: 8,
-      //   name: "Nina",
-      //   age: 69,
-      //   img: "https://www.google.com/",
-      //   isFavorite: false
-      // }
-    ]
+  async created() {
+    this.pets = await this.fetchPets();
+
   },
 }
 </script>
 
 <style>
+img {
+  height: 250px;
+  object-fit: cover;
+}
 
 </style>
